@@ -95,7 +95,7 @@
 	
 	<distributionManagement>
 	
-	    <!--<repository>
+	    <repository>
 	      <id>nexus</id>
 	      <name>KK FUNDA Releases Nexus Repository</name>
 	      <url>http://13.233.253.124:8081/repository/jio-release/</url>
@@ -107,7 +107,7 @@
 	      <url>http://13.233.253.124:8081/repository/jio-snapshot/</url>
 	    </snapshotRepository>
 	    
-	</distributionManagement>-->
+	</distributionManagement>
 	
 	<build>
 		<finalName>maven-web-application</finalName>
