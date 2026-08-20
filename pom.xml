@@ -104,7 +104,7 @@
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>KK FUNDA Snapshot Nexus Repository </name>
-	      <url>http://54.198.101.19:8081/repository/jenkins_release/</url>
+	      <url>http://54.198.101.19:8081/repository/jenkins_snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
