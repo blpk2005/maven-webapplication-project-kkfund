@@ -31,15 +31,14 @@ echo "build number: ${env.BUILD_NUMBER}"
 
    stage('Deploy Into Nexus')
    {
-    sh "${mavenHome}/bin/mvn clean deploy"
+    sh "${mavenHome}/bin/mvn deploy"
    }
 
     stage('Deploy to Tomcat') 
     {
       
       sh """
-
-      curl -u kk:password \
+      curl -u admin:admin \
 --upload-file ${WORKSPACE}/target/maven-web-application.war \
 "http://32.198.19.198:8080/manager/text/deploy?path=/maven-web-application&update=true"
           
