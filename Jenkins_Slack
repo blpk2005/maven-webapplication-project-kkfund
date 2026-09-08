@@ -8,8 +8,8 @@ node {
 
             notifyBuild('STARTED')
 
-            git branch: 'dev',
-                url: 'https://github.com/kkdevopsb7/maven-webapplication-project-kkfunda.git'
+            git branch: 'main',
+                url: 'https://github.com/blpk2005/maven-webapplication-project-kkfund.git'
         }
 
         stage('Compile') {
