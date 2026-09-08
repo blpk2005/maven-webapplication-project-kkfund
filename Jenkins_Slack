@@ -20,7 +20,7 @@ echo "build number: ${env.BUILD_NUMBER}"
 
    stage('Build')
    {
- notifyBuild(”Started Build”)
+
     sh "${mavenHome}/bin/mvn clean package"
 
    }
@@ -78,10 +78,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
     color = 'GREEN'
     colorCode = '#278EF5'
   } 
-else if (buildStatus ==”Started Build” ){
-Color  = “Blue”
-colorCode = ‘#27B0F5’
-}
+
 
 else {
     color = 'RED'
