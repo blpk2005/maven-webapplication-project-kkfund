@@ -46,7 +46,7 @@
 <body>
 
 <header>
-    <h1>Pavan's jenkins Complete CI sunday </h1>
+    <h1>Pavan's jenkins Complete CI/CD using scripted way pipeline </h1>
 </header>
 
 <div class="container">
