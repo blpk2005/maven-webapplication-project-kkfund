@@ -1,7 +1,7 @@
 node 
 {
     //   /var/lib/jenkins/tools/hudson.tasks.Maven_MavenInstallation/maven-3.9.6
-   def mavenHome=tool name: "maven-3.9.6"
+   def mavenHome=tool name: "maven-3.9.16"
 echo "git branch Name: ${env.BRANCH_NAME}"
 echo "build number: ${env.BUILD_NUMBER}"
 
@@ -40,8 +40,8 @@ echo "build number: ${env.BUILD_NUMBER}"
       sh """
 
       curl -u kk:password \
---upload-file /var/lib/jenkins/workspace/scripted-way-PL-1/target/maven-web-application.war \
-"http://13.126.156.47:8080/manager/text/deploy?path=/maven-web-application&update=true"
+--upload-file ${WORKSPACE}/target/maven-web-application.war \
+"http://32.198.19.198:8080/manager/text/deploy?path=/maven-web-application&update=true"
           
         """
     }
