@@ -17,7 +17,7 @@ node {
         sh "${MavenHome}/bin/mvn sonar:sonar"
     }
     stage("Artifact backup"){
-        sh "${MavenHome}/bin/mvn deploy"
+        sh "${MavenHome}/bin/mvn clean deploy"
     }
     stage("Deploy"){
         sh """
