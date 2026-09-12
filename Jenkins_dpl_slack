@@ -1,0 +1,101 @@
+pipeline{
+    agent any
+    environment{
+        B_No = "${BUILD_NUMBER}"
+    }
+    tools{
+        maven "maven-3.9.16"
+    }
+    stages{
+       stage("git Checkout"){
+           steps{
+               notifyBuild('STARTED')
+               git branch:"main",
+               url:"https://github.com/blpk2005/maven-webapplication-project-kkfund.git"
+           }
+       }
+        stage("mvn version checking"){
+           steps{
+               sh "mvn --version"
+           }
+       }
+        stage("compile"){
+           steps{
+               sh "mvn compile"
+           }
+       }
+        stage("Build artifact"){
+           steps{
+               sh "mvn clean package"
+           }
+       }
+        stage("SonarQube Report"){
+           steps{
+               sh "mvn sonar:sonar"
+           }
+       }
+        stage("Artifact Backup"){
+           steps{
+               sh "mvn deploy"
+           }
+       }
+      stage("Deploy Tomcat"){
+    steps{
+        sh """
+            curl -u admin:admin \
+            --upload-file ${WORKSPACE}/target/maven-web-application.war \
+            "http://54.145.231.171:8080/manager/text/deploy?path=/maven-web-application&update=true"
+        """
+        }
+    }
+           
+    }
+post{
+success {
+
+    script
+    {
+     notifyBuild(currentBuild.result)
+    }
+    
+  }
+  failure {
+
+  script
+  {
+    notifyBuild(currentBuild.result)
+
+  }
+   
+  }
+}
+}
+
+
+
+//notifiactions
+def notifyBuild(String buildStatus = 'STARTED') {
+    buildStatus = buildStatus ?: 'SUCCESS'
+
+    def colorCode
+    def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+    def summary = "${subject} (${env.BUILD_URL})"
+
+    switch (buildStatus) {
+        case 'STARTED':
+            colorCode = '#FFFF00' // Yellow
+            break
+        case 'SUCCESS':
+            colorCode = '#38F527' // Green
+            break
+        default:
+            colorCode = '#FF0000' // Red
+    }
+
+    slackSend(color: colorCode, message: summary, channel: '#all-testigfsjjenkins')
+}
+
+
+
+
+
