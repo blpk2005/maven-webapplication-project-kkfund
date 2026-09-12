@@ -1,0 +1,116 @@
+pipeline{
+    agent any
+    environment{
+        B_No = "${BUILD_NUMBER}"
+    }
+    tools{
+        maven "maven-3.9.16"
+    }
+    stages{
+       stage("git Checkout"){
+           steps{
+               notifyBuild('STARTED')
+               git branch:"main",
+               url:"https://github.com/blpk2005/maven-webapplication-project-kkfund.git"
+           }
+       }
+        stage("mvn version checking"){
+           steps{
+               sh "mvn --version"
+           }
+       }
+        stage("compile"){
+           steps{
+               sh "mvn compile"
+           }
+       }
+        stage("Build artifact"){
+           steps{
+               sh "mvn clean package"
+               notifyBuild('Built war file')
+           }
+       }
+        stage("SonarQube Report"){
+           steps{
+               sh "mvn sonar:sonar"
+               notifyBuild('SQ Report Genterated')
+           }
+       }
+        stage("Artifact Backup"){
+           steps{
+               sh "mvn deploy"
+               notifyBuild('Artifact backuped')
+           }
+       }
+      stage("Deploy Tomcat"){
+    steps{
+        sh """
+            curl -u admin:admin \
+            --upload-file ${WORKSPACE}/target/maven-web-application.war \
+            "http://54.145.231.171:8080/manager/text/deploy?path=/maven-web-application&update=true"
+        """
+        notifyBuild('Deployed')
+        }
+    }
+           
+    }
+post{
+success {
+
+    script
+    {
+     notifyBuild(currentBuild.result)
+    }
+    
+  }
+  failure {
+
+  script
+  {
+    notifyBuild(currentBuild.result)
+
+  }
+   
+  }
+}
+}
+
+
+
+//notifiactions
+def notifyBuild(String buildStatus = 'STARTED') {
+    buildStatus = buildStatus ?: 'SUCCESS'
+
+    def colorCode
+    def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+    def summary = "${subject} (${env.BUILD_URL})"
+
+    switch (buildStatus) {
+        case 'STARTED':
+            colorCode = '#FFFF00' // Yellow
+            break
+        case 'SUCCESS':
+            colorCode = '#38F527' // Green
+            break
+        case 'Built war file':
+            colorCode = '#275EF5' // Blue
+            break
+        case 'SQ Report Genterated'':
+            colorCode = '#AD27F5' // Violet
+            break
+        case 'Artifact backuped':
+            colorCode = '#27D6F5' // Sky blue
+            break
+        case 'Deployed':
+            colorCode = '#73F527' // Sky blue
+            break
+        default:
+            colorCode = '#FF0000' // Red
+    }
+
+    slackSend(color: colorCode, message: summary, channel: '#all-testigfsjjenkins')
+}
+
+
+
+
