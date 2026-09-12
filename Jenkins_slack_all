@@ -95,7 +95,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
         case 'Built war file':
             colorCode = '#275EF5' // Blue
             break
-        case 'SQ Report Genterated'':
+        case 'SQ Report Genterated':
             colorCode = '#AD27F5' // Violet
             break
         case 'Artifact backuped':
