@@ -43,7 +43,7 @@ pipeline{
         sh """
             curl -u admin:admin \
             --upload-file ${WORKSPACE}/target/maven-web-application.war \
-            "http://54.145.231.171:8080/manager/text/deploy?path=/maven-web-application&update=true"
+            "http://13.221.170.175:8080/manager/text/deploy?path=/maven-web-application&update=true"
         """
     }
 }
