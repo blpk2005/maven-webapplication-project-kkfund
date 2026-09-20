@@ -46,7 +46,7 @@
 <body>
 
 <header>
-    <h1>Pavan's jenkins Complete CI/CD using declarative way pipeline with slack dev branch/h1>
+    <h1>Pavan's jenkins Complete CI/CD using declarative way pipeline using slave node2</h1>
 </header>
 
 <div class="container">
